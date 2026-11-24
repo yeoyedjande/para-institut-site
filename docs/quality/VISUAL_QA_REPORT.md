@@ -32,6 +32,15 @@ SwiftShader (rendu logiciel). Build de production (`next build && next start`). 
 | 8 | Ordre des titres (h1 → h3) sur la boutique | Titre de section `h2` (lecteurs d'écran) |
 | 9 | Texte indicatif des champs à 3,56:1 | `#667673` (4,6:1) |
 
+## v2 « expérience » (24/11/2026)
+Refonte demandée par le commanditaire (« waouh », fluidité, animation, 3D). Captures du parcours complet à 1440×900 et
+390×844 (rideau, héros, manifeste, univers, laboratoire épinglé à deux paliers, soins horizontaux, boutique, finale).
+Corrections issues de l'examen : espaces absorbés entre les mots découpés en lettres (« Votrepeau. »), anneau du curseur
+affichant « ON » (attribut de détection lu par erreur), goutte nacrée trop pâle sur ivoire (héros passé en sérum),
+avertissement d'hydratation dû au script d'ouverture, mots du manifeste estompés sous 3:1 (couleur au lieu d'opacité),
+en-tête transparent au-dessus d'un en-tête de page sombre, laboratoire transparent hors de sa zone active.
+Les captures `motion-*` de `docs/quality/screenshots/` sont rendues avec `?webgl=force` (rendu logiciel, sans GPU).
+
 ## Analyse qualitative (captures examinées)
 - **Hiérarchie** : promesse lisible dès le premier écran à toutes les tailles ; deux actions visibles sans défilement
   jusqu'à 360×800.

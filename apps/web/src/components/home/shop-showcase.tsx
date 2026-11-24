@@ -13,7 +13,7 @@ export function ShopShowcase() {
   const products = getProducts().slice(0, 4);
   const phone = PHONES[0];
   return (
-    <section className={`section ${styles.section}`} aria-labelledby="shop-title">
+    <section className={`section ${styles.section}`} aria-labelledby="shop-title" data-mood="ivory">
       <div className={`container ${styles.head}`}>
         <Reveal className={styles.headText}>
           <p className="eyebrow">05 — La parapharmacie</p>

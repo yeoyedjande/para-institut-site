@@ -21,9 +21,15 @@
   place-items: center;
 }
 
+.media {
+  perspective: 900px;
+}
+
+/* Inclinaison 3D au survol : la matière flotte dans la vitrine */
 .poster {
   width: 78%;
-  transition: transform var(--dur-cinematic) var(--ease-out);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transition: transform 0.9s var(--ease-out);
 }
 
 .poster img {
@@ -34,7 +40,7 @@
 
 @media (hover: hover) {
   .card:hover .poster {
-    transform: scale(1.06) rotate(-4deg);
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.08);
   }
 }
 

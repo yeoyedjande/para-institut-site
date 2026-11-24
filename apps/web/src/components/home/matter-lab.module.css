@@ -1,44 +1,118 @@
 .section {
   position: relative;
+  background:
+    radial-gradient(60rem 40rem at 50% 60%, rgb(0 154 150 / 0.28), transparent 70%),
+    var(--brand-ink-deep);
+}
+
+.section[data-pinned] {
+  height: 420vh;
+}
+
+.sticky {
+  position: relative;
   overflow: hidden;
   padding-block: var(--section-y);
-  background:
-    radial-gradient(60rem 40rem at 50% 70%, rgb(0 154 150 / 0.28), transparent 70%),
-    var(--brand-ink-deep);
-  transition: background-color var(--dur-cinematic) var(--ease-in-out);
 }
 
-.head {
-  display: grid;
-  gap: var(--space-4);
-  max-width: 52rem;
-  margin-inline: auto;
+.section[data-pinned] .sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding-block: calc(var(--header-h) + var(--space-5)) var(--space-6);
+}
+
+/* Nom géant en contour, derrière le texte, devant la goutte : la matière se lit à travers */
+.giant {
+  position: absolute;
+  inset: 50% 0 auto;
+  z-index: 0;
+  transform: translateY(-50%);
   text-align: center;
-  justify-items: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(6rem, 2rem + 22vw, 26rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(226 194 127 / 0.35);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-.head :global(.lede) {
-  margin-inline: auto;
+.giantChar {
+  display: inline-block;
 }
 
-.em {
-  color: var(--accent-gold);
-}
-
-.stage {
-  display: grid;
-  gap: var(--space-6);
-  align-items: center;
-  margin-top: var(--space-7);
-}
-
-@media (min-width: 1024px) {
-  .stage {
-    grid-template-columns: 15rem 1fr 17rem;
+@media (prefers-reduced-motion: no-preference) {
+  .giantChar {
+    animation: giantIn 1s var(--ease-out) both;
+    animation-delay: calc(var(--c) * 45ms);
   }
 }
 
+@keyframes giantIn {
+  from {
+    opacity: 0;
+    transform: translateY(40%) rotate(8deg);
+  }
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-areas:
+    "head"
+    "visual"
+    "panel"
+    "tabs"
+    "progress";
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 16rem 1fr 18rem;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "head head head"
+      "tabs visual panel"
+      "progress progress progress";
+    align-items: center;
+  }
+}
+
+.section[data-pinned] .layout {
+  grid-template-rows: auto 1fr auto auto auto;
+}
+
+@media (min-width: 1024px) {
+  .section[data-pinned] .layout {
+    grid-template-rows: auto 1fr auto;
+  }
+}
+
+.head {
+  grid-area: head;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.title em {
+  color: var(--accent-gold);
+}
+
 .tabs {
+  grid-area: tabs;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-2);
@@ -57,19 +131,24 @@
   gap: 0 var(--space-3);
   align-items: baseline;
   min-height: 48px;
-  padding: var(--space-3) var(--space-3);
+  padding: var(--space-3);
   border: 0;
   border-top: 1px solid rgb(255 255 255 / 0.16);
   background: none;
   color: var(--color-text-inverse-secondary);
   text-align: left;
   cursor: pointer;
-  transition: color var(--dur-base) var(--ease-out);
+  transition: color var(--dur-base) var(--ease-out), padding var(--dur-base) var(--ease-out);
 }
 
 .tab:hover,
 .tab[aria-selected="true"] {
   color: #fff;
+}
+
+.tab[aria-selected="true"] {
+  padding-left: var(--space-5);
+  border-top-color: var(--accent-gold);
 }
 
 .tabIndex {
@@ -101,6 +180,9 @@
     text-align: center;
     padding-inline: 0.25rem;
   }
+  .tab[aria-selected="true"] {
+    padding-left: 0.25rem;
+  }
   .tabIndex,
   .tabTouch {
     display: none;
@@ -108,43 +190,33 @@
   .tabName {
     font-size: var(--text-lg);
   }
-  .tab[aria-selected="true"] {
-    border-top-color: var(--accent-gold);
+}
+
+.fallback {
+  grid-area: visual;
+  justify-self: center;
+  width: min(100%, 30rem);
+  transition: opacity 0.8s var(--ease-out);
+}
+
+.fallback img {
+  width: 100%;
+  height: auto;
+}
+
+:global(html[data-stage-live]) .fallback {
+  opacity: 0;
+}
+
+@media (max-width: 1023px) {
+  .section[data-pinned] .fallback {
+    width: min(62%, 16rem);
+    align-self: center;
   }
 }
 
-.canvasWrap {
-  position: relative;
-  width: min(100%, 40rem);
-  justify-self: center;
-}
-
-.halo {
-  position: absolute;
-  inset: 70% 15% 0;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 255 255 / 0.18), transparent);
-  filter: blur(14px);
-}
-
-.canvas {
-  cursor: grab;
-}
-
-.counter {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  font-size: var(--text-xs);
-  letter-spacing: 0.16em;
-  color: var(--color-text-inverse-secondary);
-}
-
-.counter span {
-  color: #fff;
-}
-
 .panel {
+  grid-area: panel;
   display: grid;
   gap: var(--space-3);
   max-width: 26rem;
@@ -188,4 +260,50 @@
   color: var(--color-text-inverse-secondary);
   border-top: 1px solid rgb(255 255 255 / 0.16);
   padding-top: var(--space-3);
+}
+
+@media (max-width: 1023px) {
+  .section[data-pinned] .panelText,
+  .section[data-pinned] .disclaimer {
+    display: none;
+  }
+}
+
+.progress {
+  grid-area: progress;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  color: var(--color-text-inverse-secondary);
+}
+
+.counter span {
+  color: #fff;
+}
+
+.bar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: rgb(255 255 255 / 0.18);
+}
+
+.bar span {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-gold);
+  transform: scaleX(var(--lab-progress, 0.25));
+  transform-origin: left;
+}
+
+.hint {
+  text-transform: uppercase;
+}
+
+@media (max-width: 639px) {
+  .hint {
+    display: none;
+  }
 }

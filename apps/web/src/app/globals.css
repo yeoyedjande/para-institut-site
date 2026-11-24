@@ -1,5 +1,6 @@
 @import "@para/ui/tokens.css";
 @import "@para/ui/base.css";
+@import "lenis/dist/lenis.css";
 
 /* Polices auto-hébergées (SIL OFL 1.1, public/fonts) — aucune requête vers un service tiers */
 @font-face {
@@ -217,4 +218,47 @@ html {
   gap: 0.5rem;
   font-size: var(--text-xs);
   color: var(--color-warning);
+}
+
+/* ------------------------------------------------------------------ Expérience enrichie (v2) */
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Le contenu passe devant la scène 3D fixe */
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Défilement fluide : Lenis gère l'amorti, pas le CSS */
+html[data-experience] {
+  scroll-behavior: auto;
+}
+
+/* Ambiance chromatique : sections transparentes, le fond du document change de couleur */
+html[data-mood-active] main [data-mood][data-mood-current],
+html[data-mood-active] footer[data-mood][data-mood-current] {
+  background: transparent;
+}
+
+body {
+  transition: color 0.6s var(--ease-out);
+}
+
+/* Lettres révélées à l'entrée dans l'écran */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-char {
+    display: inline-block;
+    transition:
+      transform 1s var(--ease-out),
+      opacity 1s var(--ease-out);
+    transition-delay: calc(var(--c, 0) * 30ms);
+  }
+  [data-state="hidden"] .reveal-char {
+    opacity: 0;
+    transform: translateY(0.6em) rotate(5deg);
+  }
 }

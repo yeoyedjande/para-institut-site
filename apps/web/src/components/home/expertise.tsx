@@ -14,7 +14,7 @@ const STEPS = [
 /** Section 07 — Expertise et conseils. Aucune qualification, aucun résultat thérapeutique revendiqué. */
 export function Expertise() {
   return (
-    <section className={`section ${styles.section}`} aria-labelledby="expertise-title">
+    <section className={`section ${styles.section}`} aria-labelledby="expertise-title" data-mood="ivory">
       <div className={`container ${styles.grid}`}>
         <Reveal className={styles.intro}>
           <p className="eyebrow">07 — Expertise &amp; conseils</p>

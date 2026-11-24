@@ -1,4 +1,10 @@
 import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  Group,
+  NormalBlending,
+  Points,
   Color,
   IcosahedronGeometry,
   Mesh,
@@ -154,11 +160,49 @@ void main(){
 }
 `;
 
+const dustVertex = /* glsl */ `
+uniform float uTime;
+uniform float uScroll;
+uniform float uPixelRatio;
+attribute float aSeed;
+varying float vAlpha;
+void main(){
+  vec3 p = position;
+  // Dérive lente vers le haut, parallaxe de défilement selon la profondeur
+  p.y = mod(p.y + uTime * (0.05 + aSeed * 0.08) + uScroll * (0.6 + p.z * 0.25) + 5.0, 10.0) - 5.0;
+  p.x += sin(uTime * 0.3 + aSeed * 12.0) * 0.15;
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = (2.0 + aSeed * 5.0) * uPixelRatio * (6.0 / -mv.z);
+  vAlpha = 0.35 + 0.65 * (0.5 + 0.5 * sin(uTime * (1.0 + aSeed * 2.0) + aSeed * 40.0));
+}
+`;
+
+const dustFragment = /* glsl */ `
+uniform vec3 uColor;
+uniform float uOpacity;
+varying float vAlpha;
+void main(){
+  float d = length(gl_PointCoord - 0.5);
+  float a = smoothstep(0.5, 0.0, d);
+  gl_FragColor = vec4(uColor, a * vAlpha * uOpacity);
+}
+`;
+
+/** Position de la goutte dans le cadre : x, y en fraction de la demi-largeur / demi-hauteur (-1..1), échelle. */
+export interface Pose {
+  x: number;
+  y: number;
+  scale: number;
+}
+
 export interface EngineOptions {
   texture: TextureKey;
   /** Image fixe (capture des visuels de repli) : temps figé, aucune animation. */
   still?: boolean;
   quality?: "high" | "low";
+  /** Scène plein écran (page d'accueil) : caméra fixe, goutte positionnée par `setPose`, poussière de lumière. */
+  stage?: boolean;
   onFirstFrame?: () => void;
   onFailure?: () => void;
 }
@@ -174,6 +218,14 @@ export class MatterEngine {
   private material: ShaderMaterial;
   private blob: Mesh;
   private droplets: Mesh[] = [];
+  private rig = new Group();
+  private dust: Points | null = null;
+  private dustMaterial: ShaderMaterial | null = null;
+  private pose: Pose = { x: 0, y: 0, scale: 1 };
+  private poseTarget: Pose = { x: 0, y: 0, scale: 1 };
+  private velocity = 0;
+  private wobble = 0;
+  private spin = 0;
   private last = 0;
   private raf = 0;
   private running = false;
@@ -235,7 +287,8 @@ export class MatterEngine {
 
     const detail = quality === "high" ? 72 : 36;
     this.blob = new Mesh(new IcosahedronGeometry(1, detail), this.material);
-    this.scene.add(this.blob);
+    this.rig.add(this.blob);
+    this.scene.add(this.rig);
 
     // Trois gouttelettes satellites : profondeur et échelle
     const dropletGeometry = new IcosahedronGeometry(1, quality === "high" ? 24 : 12);
@@ -250,8 +303,10 @@ export class MatterEngine {
       drop.scale.setScalar(s);
       drop.userData.base = new Vector3(x, y, z);
       this.droplets.push(drop);
-      this.scene.add(drop);
+      this.rig.add(drop);
     }
+
+    if (options.stage) this.createDust(quality === "high" ? 520 : 220);
 
     this.camera.position.set(0, 0, 6.2);
     this.camera.lookAt(0, 0, 0);
@@ -267,6 +322,57 @@ export class MatterEngine {
     }
   }
 
+  private createDust(count: number) {
+    const positions = new Float32Array(count * 3);
+    const seeds = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 16;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i * 3 + 2] = -3 + Math.random() * 4;
+      seeds[i] = Math.random();
+    }
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new BufferAttribute(positions, 3));
+    geometry.setAttribute("aSeed", new BufferAttribute(seeds, 1));
+    this.dustMaterial = new ShaderMaterial({
+      vertexShader: dustVertex,
+      fragmentShader: dustFragment,
+      transparent: true,
+      depthWrite: false,
+      blending: NormalBlending,
+      uniforms: {
+        uTime: { value: 0 },
+        uScroll: { value: 0 },
+        uPixelRatio: { value: this.renderer.getPixelRatio() },
+        uColor: { value: new Color("#00706d") },
+        uOpacity: { value: 0.55 },
+      },
+    });
+    this.dust = new Points(geometry, this.dustMaterial);
+    this.scene.add(this.dust);
+  }
+
+  /** Ambiance : poussière turquoise sur fond clair, dorée et lumineuse sur fond sombre. */
+  setMood(mood: "light" | "dark") {
+    if (!this.dustMaterial) return;
+    const u = this.dustMaterial.uniforms;
+    (u.uColor!.value as Color).set(mood === "dark" ? "#f3dca6" : "#00706d");
+    u.uOpacity!.value = mood === "dark" ? 0.9 : 0.5;
+    this.dustMaterial.blending = mood === "dark" ? AdditiveBlending : NormalBlending;
+    this.dustMaterial.needsUpdate = true;
+  }
+
+  /** Destination de la goutte ; le déplacement est amorti à chaque image (voyage fluide). */
+  setPose(pose: Pose, immediate = false) {
+    this.poseTarget = { ...pose };
+    if (immediate) this.pose = { ...pose };
+  }
+
+  /** Vitesse de défilement (px/image) : la matière ondule davantage quand on défile vite. */
+  setVelocity(velocity: number) {
+    this.velocity = velocity;
+  }
+
   private handleContextLost = (event: Event) => {
     event.preventDefault();
     this.stop();
@@ -279,8 +385,9 @@ export class MatterEngine {
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
     // Garder la goutte entière quel que soit le cadrage (portrait sur mobile)
-    const fit = w / h < 0.8 ? 7.6 : 6.2;
+    const fit = this.options.stage ? 6.2 : w / h < 0.8 ? 7.6 : 6.2;
     this.camera.position.z = fit;
+    if (this.dustMaterial) this.dustMaterial.uniforms.uPixelRatio!.value = this.renderer.getPixelRatio();
     this.camera.updateProjectionMatrix();
     if (!this.running) this.renderFrame(0);
   }
@@ -336,6 +443,8 @@ export class MatterEngine {
     this.resizeObserver.disconnect();
     this.canvas.removeEventListener("webglcontextlost", this.handleContextLost);
     this.blob.geometry.dispose();
+    this.dust?.geometry.dispose();
+    this.dustMaterial?.dispose();
     this.droplets[0]?.geometry.dispose();
     this.material.dispose();
     this.renderer.dispose();
@@ -406,7 +515,30 @@ export class MatterEngine {
     (u.uPointer!.value as Vector3).set(this.pointer.x * 1.2, this.pointer.y * 1.2, 1).normalize();
     u.uPointerStrength!.value = this.pointerStrength;
 
-    this.blob.rotation.y = this.time * 0.12 + this.pointer.x * 0.35 + this.scroll * 1.2;
+    // Ondulation liée à la vitesse de défilement, amortie
+    const k = 1 - Math.pow(0.04, Math.max(dt, 0.0001));
+    const targetWobble = Math.min(Math.abs(this.velocity) * 0.006, 0.16);
+    this.wobble += (targetWobble - this.wobble) * Math.min(1, k * 1.5);
+    this.velocity *= 0.9;
+    if (this.mix >= 1) u.uAmp!.value = this.to.amp + this.wobble;
+    this.spin += dt * this.wobble * 6;
+
+    // Voyage de la goutte dans le cadre (scène plein écran)
+    if (this.options.stage) {
+      this.pose.x += (this.poseTarget.x - this.pose.x) * k;
+      this.pose.y += (this.poseTarget.y - this.pose.y) * k;
+      this.pose.scale += (this.poseTarget.scale - this.pose.scale) * k;
+      const halfH = Math.tan((this.camera.fov * Math.PI) / 360) * this.camera.position.z;
+      const halfW = halfH * this.camera.aspect;
+      this.rig.position.set(this.pose.x * halfW, this.pose.y * halfH, 0);
+      this.rig.scale.setScalar(this.pose.scale);
+      if (this.dustMaterial) {
+        this.dustMaterial.uniforms.uTime!.value = this.time;
+        this.dustMaterial.uniforms.uScroll!.value = this.scroll;
+      }
+    }
+
+    this.blob.rotation.y = this.time * 0.12 + this.pointer.x * 0.35 + this.scroll * 1.2 + this.spin;
     this.blob.rotation.x = Math.sin(this.time * 0.1) * 0.15 - this.pointer.y * 0.25;
     this.droplets.forEach((drop, i) => {
       const base = drop.userData.base as Vector3;

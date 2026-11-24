@@ -10,6 +10,11 @@ Mis à jour : 24 novembre 2026 — fin de la mission P00–P04.
 | P03 Prototype | ✅ | Accueil 11 sections, boutique, fiche, soins, réservation, pages institutionnelles, back-office (coque) |
 | P04 Qualité | ✅ | `quality/*` : 30 tests unitaires, 30 e2e, 12 API, Lighthouse ≥ 90 |
 
+## v2 « expérience » (24/11/2026)
+Refonte de la page d'accueil à la demande du commanditaire : défilement fluide, rideau d'ouverture, titre lettre par
+lettre, goutte 3D voyageuse, manifeste, bandeaux réactifs, laboratoire épinglé, soins horizontaux, ambiance chromatique,
+curseur de marque. Voir `creative/MOTION_DESIGN.md` et `creative/3D_EXPERIENCE.md`.
+
 ## Fonctionnel vs prototype
 - **Fonctionnel** : navigation, recherche, panier local, filtres, fiche produit, demande de rendez-vous transmise par
   WhatsApp, mode de contenu (démo / production), API commandes et réservations (non branchée au site).

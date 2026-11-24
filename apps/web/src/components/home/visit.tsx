@@ -9,7 +9,7 @@ export function Visit() {
   const a = ESTABLISHMENT.address.value;
   const phone = PHONES[0];
   return (
-    <section className={`section ${styles.section}`} aria-labelledby="visit-title">
+    <section className={`section ${styles.section}`} aria-labelledby="visit-title" data-mood="sand">
       <div className={`container ${styles.grid}`}>
         <Reveal className={styles.text}>
           <p className="eyebrow">10 — Notre institut</p>

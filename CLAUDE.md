@@ -36,8 +36,11 @@ et réseaux sociaux : **TO_CONFIRM**. Manques : `docs/MISSING_INFORMATION.md`.
 ## Architecture
 pnpm workspaces : `apps/web`, `apps/admin` (Next.js 16.4, React 19.3, TS strict), `services/api` (FastAPI, SQLAlchemy 2,
 Alembic, PostgreSQL 16), `packages/ui`, `packages/contracts`. CSS Modules + jetons (pas de Tailwind/kit générique).
-Three.js brut pour la scène « matière » (`apps/web/src/components/matter`). Animations : CSS + IntersectionObserver
-(pas de GSAP, pas de défilement détourné). Détails : `docs/specifications/TECHNICAL_ARCHITECTURE.md`.
+Three.js brut pour la scène « matière » (`apps/web/src/components/matter`). Expérience v2 (décision du commanditaire,
+24/11/2026 : « waouh », fluidité, animation, 3D) : Lenis (défilement fluide, tactile natif) + GSAP/ScrollTrigger
+(scènes épinglées, défilement horizontal, chorégraphies) dans `apps/web/src/components/experience` ; scène 3D unique
+« voyageuse » (`matter-stage.tsx`) ; tout est désactivé sous `prefers-reduced-motion`. Pas d'interception du défilement
+(ni snapping ni blocage). Détails : `docs/creative/MOTION_DESIGN.md`, `docs/specifications/TECHNICAL_ARCHITECTURE.md`.
 
 ## Règles métier
 `docs/business/BUSINESS_RULES.md` (référence). Commandes : en attente de confirmation, réservation transactionnelle

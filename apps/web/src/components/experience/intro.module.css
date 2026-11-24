@@ -1,0 +1,84 @@
+.curtain {
+  display: none;
+}
+
+:global(html[data-intro]) .curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  background: var(--brand-turquoise);
+  pointer-events: none;
+  animation: lift 1.05s var(--ease-in-out) 1.05s forwards;
+}
+
+.center {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  animation: settle 1.05s var(--ease-in-out) 1.05s forwards;
+}
+
+.logo {
+  overflow: hidden;
+  animation: reveal 0.9s var(--ease-out) both;
+}
+
+.line {
+  display: block;
+  width: 7rem;
+  height: 1px;
+  background: rgb(255 255 255 / 0.7);
+  transform-origin: left;
+  animation: grow 0.8s var(--ease-in-out) 0.25s both;
+}
+
+.caption {
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.85);
+  animation: fade 0.6s var(--ease-out) 0.45s both;
+}
+
+@keyframes reveal {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes settle {
+  to {
+    transform: translateY(-14vh) scale(0.92);
+    opacity: 0;
+  }
+}
+
+/* Le rideau se retire en goutte : une ellipse qui remonte et libère la page */
+@keyframes lift {
+  0% {
+    clip-path: ellipse(150% 150% at 50% 0%);
+  }
+  100% {
+    clip-path: ellipse(150% 0% at 50% 0%);
+    visibility: hidden;
+  }
+}

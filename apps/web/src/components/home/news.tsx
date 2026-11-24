@@ -21,7 +21,7 @@ export function News({ now = new Date() }: { now?: Date }) {
   const items = publishable(NEWS, CONTENT_MODE).filter((n) => isCurrent(n, now));
   const [featured, ...others] = items;
   return (
-    <section className={`section ${styles.section}`} aria-labelledby="news-title">
+    <section className={`section ${styles.section}`} aria-labelledby="news-title" data-mood="ivory">
       <div className={`container ${styles.head}`}>
         <Reveal className={styles.headText}>
           <p className="eyebrow">09 — Actualités &amp; événements</p>

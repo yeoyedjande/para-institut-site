@@ -3,6 +3,8 @@ import { publishable } from "@para/contracts";
 import { ProvenanceBadge } from "@para/ui";
 import { CONTENT_MODE, IS_DEMO } from "@/lib/content-mode";
 import { ESTABLISHMENT, HOURS, MAPS_HREF, PHONES, SOCIALS, telHref, whatsappHref } from "@/content/establishment";
+import { Reveal } from "@/components/motion/reveal";
+import { SplitChars } from "@/components/home/split";
 import { BrandLogo } from "./brand-logo";
 import { ClockIcon, PinIcon, WhatsAppIcon } from "./icons";
 import { NAV_ITEMS } from "./nav-items";
@@ -13,12 +15,14 @@ export function SiteFooter() {
   const socials = publishable(SOCIALS, CONTENT_MODE);
   const address = ESTABLISHMENT.address.value;
   return (
-    <footer className={`${styles.footer} grain`} data-theme="inverse" id="contact-footer">
+    <footer className={`${styles.footer} grain`} data-theme="inverse" id="contact-footer" data-stage="finale" data-mood="abyss">
       <div className={`container ${styles.top}`}>
         <p className="eyebrow">11 — Contact</p>
-        <h2 className={styles.statement}>
-          Parlons de <em>votre peau.</em>
-        </h2>
+        <Reveal as="h2" className={styles.statement} variant="fade" aria-label="Parlons de votre peau.">
+          <SplitChars text="Parlons de" className="reveal-char" /> <em>
+            <SplitChars text="votre peau." start={11} className="reveal-char" />
+          </em>
+        </Reveal>
         <p className={styles.intro}>Une question sur un soin, un produit ou une commande ? Notre équipe vous répond sur WhatsApp.</p>
         <ul role="list" className={styles.phones}>
           {PHONES.map((phone) => (

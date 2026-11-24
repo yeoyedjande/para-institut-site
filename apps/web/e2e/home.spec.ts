@@ -39,30 +39,29 @@ test("sans WebGL, les visuels statiques restent affichés", async ({ page }) => 
   await page.goto("/?webgl=0");
   await page.waitForTimeout(3000);
   const hero = page.locator("section").first();
-  await expect(hero.getByRole("img", { name: /goutte de matière nacrée/ })).toBeVisible();
-  expect(await page.locator("[data-live]").count()).toBe(0);
+  await expect(hero.getByRole("img", { name: /goutte de sérum/ })).toBeVisible();
+  expect(await page.locator("html[data-stage-live]").count()).toBe(0);
 });
 
 test("rendu logiciel (sans GPU) : visuel statique, aucune animation continue", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("load");
-  await page.locator("#lab-title").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(2500);
-  expect(await page.locator("[data-live]").count()).toBe(0);
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(4000);
+  expect(await page.locator("html[data-stage-live]").count()).toBe(0);
+  await expect(page.locator("section").first().getByRole("img", { name: /goutte de sérum/ })).toBeVisible();
 });
 
-test("avec WebGL, la scène 3D remplace le visuel de repli", async ({ page, isMobile }) => {
+test("avec WebGL, la scène 3D voyageuse remplace les visuels statiques", async ({ page, isMobile }) => {
   // L'environnement de test n'a pas de GPU : la scène est forcée en rendu logiciel
   await page.goto("/?webgl=force");
   await page.waitForLoadState("load");
   if (isMobile) {
-    // Mobile : héros statique (aucun téléchargement de Three.js au chargement)…
-    await page.waitForTimeout(2500);
-    expect(await page.locator("[data-live]").count()).toBe(0);
-    // …la scène démarre quand le laboratoire entre dans l'écran
-    await page.locator("#lab-title").scrollIntoViewIfNeeded();
+    // Mobile : la scène attend le premier geste (ou 3,5 s) pour ne pas concurrencer le premier affichage
+    expect(await page.locator("html[data-stage-live]").count()).toBe(0);
+    await page.mouse.wheel(0, 300);
   }
-  await expect(page.locator("[data-live]").first()).toBeAttached({ timeout: 15_000 });
+  await expect(page.locator("html[data-stage-live]")).toBeAttached({ timeout: 15_000 });
 });
 
 test("préférence « moins d'animations » : pas de défilement collant ni de scène 3D", async ({ browser }) => {
@@ -71,7 +70,8 @@ test("préférence « moins d'animations » : pas de défilement collant ni de s
   await page.goto("/");
   await page.waitForTimeout(2500);
   expect(await page.locator("[data-enhanced]").count()).toBe(0);
-  expect(await page.locator("[data-live]").count()).toBe(0);
+  expect(await page.locator("[data-pinned]").count()).toBe(0);
+  expect(await page.locator("html[data-stage-live], html[data-experience]").count()).toBe(0);
   await expect(page.getByRole("heading", { name: /La parapharmacie/ })).toBeVisible();
   await context.close();
 });

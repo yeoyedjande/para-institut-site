@@ -1,26 +1,38 @@
-# Motion design
+# Motion design — v2 « expérience »
 
-Principe : chaque mouvement sert la lecture ou la marque ; rien n'empêche de lire, naviguer ou commander.
-Aucune bibliothèque d'animation n'a été ajoutée : CSS + quelques hooks (`apps/web/src/components/motion`). GSAP avait été
-envisagé ; il a été écarté (≈ 70 Ko) car le défilement natif + IntersectionObserver suffisent (décision documentée).
+Décision du 24/11/2026 : le commanditaire demande une expérience « waouh » (fluidité au défilement, animation, 3D
+présente sur tout le site). La v1, volontairement sobre (CSS seul, défilement natif), est remplacée par une
+chorégraphie complète. Principes conservés : contenu lisible immédiatement, aucune action bloquée, accessibilité.
 
-| Animation | Où | Technique | Durée / courbe | Réduit |
-|---|---|---|---|---|
-| Lignes du titre montant de leur masque | Héros | CSS `@keyframes`, décalage 120 ms | 1200 ms, expo out | Désactivé |
-| Fondu des textes du héros | Héros | CSS | 900 ms | Désactivé |
-| Anneau de texte en rotation lente | Héros | CSS | 60 s, linéaire | Désactivé |
-| Goutte vivante (respiration, pointeur) | Héros (ordinateur), Laboratoire | WebGL | continue, pausée hors écran | Visuel fixe |
-| Révélations (montée, fondu, masque, ligne) | Sections | `Reveal` + IntersectionObserver | 1200 ms | Contenu visible d'emblée |
-| Ouverture en goutte de la Parapharmacie | Deux univers | `position: sticky` + `clip-path: circle()` piloté par la progression de défilement (`useScrollProgress`) | lié au défilement | Sections empilées |
-| Parallaxe et rotation des gouttes | Deux univers | `transform` lié à `--progress` | lié au défilement | Aucun |
-| Changement de matière | Laboratoire | Interpolation des uniformes (1,3 s, cubic in-out) avec « liquéfaction » à mi-parcours | 1300 ms | Image fixe de la texture choisie |
-| Matière qui suit le pointeur | Soins (ordinateur, souris) | `transform` + transition 420 ms | — | Masqué sur tactile |
-| Encre des boutons | Partout | Disque qui monte (`::before`) | 700 ms | Survol uniquement |
-| Soulignement des liens | Navigation, pied de page | `scaleX` / `background-size` | 360 ms | — |
-| Tiroir et modale | Panier, recherche, aperçu | `<dialog>` + keyframes | 700 ms | Instantané |
-| Pulsation du repère | Plan de l'institut | CSS | 2,8 s | Désactivé |
+## Outils
+| Outil | Version | Rôle | Licence |
+|---|---|---|---|
+| Lenis | 1.3.27 | Défilement fluide à la molette (amorti `lerp 0.085`) ; tactile laissé natif (`syncTouch: false`) | MIT |
+| GSAP + ScrollTrigger | 3.15.1 | Épinglage, défilement horizontal, animations liées au défilement (`scrub`) | GSAP Standard License (gratuite, usage commercial autorisé) |
+| @gsap/react | 2.1.2 | Nettoyage automatique (`useGSAP`) | MIT |
+| CSS | — | Lettres du héros, rideau, révélations, bandeaux | — |
 
-Règles : pas de défilement détourné (aucune bibliothèque de défilement lissé), pas d'écran de chargement, contenu
-principal visible immédiatement (le LCP n'attend aucune animation), `prefers-reduced-motion` respecté globalement
-(jetons de durée à 0, défilement collant et 3D désactivés — testé par Playwright), seules `transform`, `opacity` et
-`clip-path` sont animées.
+Fichiers : `apps/web/src/components/experience/` (défilement fluide, curseur, rideau, scène 3D, ambiance).
+
+## Chorégraphie de la page d'accueil
+| Moment | Effet | Technique |
+|---|---|---|
+| Ouverture (1 fois par session) | Rideau turquoise, logo officiel révélé, filet argent, puis le rideau se retire en goutte | CSS pur (script en ligne avant affichage) ; ne bloque aucun clic ; ≈ 2 s |
+| Héros | Titre géant lettre par lettre (montée, rotation, flou), goutte de sérum 3D libre derrière le texte, anneau typographique | CSS (lettres rendues côté serveur), WebGL |
+| Défilement du héros | Les trois lignes s'écartent (gauche/droite), le texte s'efface, la goutte prend le relais | GSAP `scrub` |
+| Manifeste | Les mots s'allument un à un (gris turquoise 3,2:1 → encre) | GSAP `scrub` + `stagger` |
+| Bandeaux | Texte géant en contour qui défile en continu et s'incline selon la vitesse de défilement | CSS + vitesse Lenis |
+| Deux univers | Épinglé ; la Parapharmacie s'ouvre en cercle depuis la goutte | `position: sticky` + `clip-path` |
+| Laboratoire | Épinglé sur 4 paliers : chaque palier change la matière de la goutte, nom géant en contour qui se recompose | ScrollTrigger + événement `para:texture` |
+| Soins | Défilement horizontal épinglé ; arches en parallaxe, numéros géants qui glissent | GSAP `containerAnimation` (≥ 900 px) ; carrousel natif sur mobile |
+| Boutique | Cartes inclinables en 3D au survol | CSS `perspective` + pointeur |
+| Ambiance | Le fond de page glisse d'une couleur à l'autre (ivoire → encre → sable → brume → abysse) | ScrollTrigger + GSAP sur `body` ; seule la section active devient transparente |
+| Finale | « Parlons de votre peau. » lettre par lettre, la goutte nacrée revient sur l'abysse | `Reveal` + WebGL |
+| Curseur (souris) | Point + anneau amorti, libellés (« Boutique », « Voir », « Réserver »), boutons magnétiques | `gsap.quickTo` ; curseur système conservé |
+
+## Garde-fous
+- `prefers-reduced-motion` : ni Lenis, ni épinglage, ni scène 3D, ni rideau, ni curseur ; sections empilées et
+  visuels statiques (testé par Playwright).
+- Tactile : inertie native ; scène 3D démarrée au premier geste.
+- Le défilement reste celui du document (barre, clavier, ancres, lecteurs d'écran) ; aucun « snapping ».
+- Animations sur `transform`, `opacity`, `clip-path`, `filter` uniquement ; boucles arrêtées hors écran.

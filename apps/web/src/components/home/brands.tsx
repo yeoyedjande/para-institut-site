@@ -12,7 +12,7 @@ export function Brands() {
   const brands = getBrands();
   if (!brands.length) return null;
   return (
-    <section className={styles.section} aria-labelledby="brands-title">
+    <section className={styles.section} aria-labelledby="brands-title" data-mood="mist">
       <div className={`container ${styles.inner}`}>
         <div className={styles.head}>
           <p className="eyebrow">08 — Marques</p>

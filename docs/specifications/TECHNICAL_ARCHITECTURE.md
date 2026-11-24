@@ -23,7 +23,7 @@ para-institut-site/
 | Front | Next.js 16.4.6, React 19.3.1 | Versions éprouvées par le dépôt événementiel ; rendu serveur, ISR, `output: standalone` (Railway) |
 | Styles | CSS Modules + jetons CSS | Identité sur mesure sans gabarit ; pas de Tailwind ni de kit d'interface générique |
 | 3D | three 0.187 (sans R3F/Drei) | Une scène unique ; poids et contrôle |
-| Animation | CSS + IntersectionObserver | GSAP écarté (inutile ici) ; aucune bibliothèque de défilement |
+| Animation | GSAP 3.15 + ScrollTrigger, Lenis 1.3 (v2, 24/11/2026) | Expérience « waouh » demandée : épinglage, horizontal, chorégraphies ; tactile natif, désactivé sous `prefers-reduced-motion` |
 | Validation | zod 4 (contrats), Pydantic 2 (API) | Validation serveur systématique |
 | Tests | Vitest 5, Testing Library, Playwright 1.63, pytest 9 | Unitaires, composants, bout en bout, intégration PostgreSQL |
 | Qualité Python | ruff, mypy strict | — |

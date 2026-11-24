@@ -7,19 +7,19 @@
   l'expérience « visuel de repli » ; sur GPU réel, la 3D démarre après le chargement, au repos du navigateur.
 - Données brutes : `docs/quality/lighthouse-summary.json`. **Aucune mesure terrain (CrUX/RUM) : site non déployé.**
 
-## Résultats (24/11/2026)
+## Résultats v2 « expérience » (24/11/2026, après GSAP, Lenis et scène 3D voyageuse)
 | Page | Forme | Perf. | Access. | Bonnes pr. | SEO* | LCP (simulé) | CLS | TBT | JS |
 |---|---|---|---|---|---|---|---|---|---|
-| `/` | mobile | **95** | 100 | 100 | 69 | 2,9 s | 0 | 100 ms | 161 Ko |
-| `/` | desktop | **100** | 100 | 100 | 69 | 0,7 s | 0 | 10 ms | 167 Ko |
-| `/boutique` | mobile | **100** | 100 | 100 | 69 | 0,9 s | 0,001 | 90 ms | 170 Ko |
-| `/boutique` | desktop | **100** | 100 | 100 | 69 | 0,2 s | 0,007 | 20 ms | 176 Ko |
-| `/boutique/serum-hydratant-demo` | mobile | **93** | 100 | 100 | 69 | 3,2 s | 0 | 80 ms | 166 Ko |
-| `/boutique/serum-hydratant-demo` | desktop | **100** | 100 | 100 | 69 | 0,7 s | 0 | 10 ms | 171 Ko |
-| `/soins` | mobile | **90** | 100 | 100 | 69 | 3,5 s | 0,001 | 120 ms | 163 Ko |
-| `/soins` | desktop | **100** | 100 | 100 | 69 | 0,7 s | 0,001 | 20 ms | 167 Ko |
-| `/soins/reservation` | mobile | **100** | 100 | 100 | 69 | 0,9 s | 0,001 | 80 ms | 165 Ko |
-| `/soins/reservation` | desktop | **100** | 100 | 100 | 69 | 0,2 s | 0,001 | 0 ms | 165 Ko |
+| `/` | mobile | **93** | 100 | 100 | 69 | 2,8 s | 0.002 | 100 ms | 218 Ko |
+| `/` | desktop | **98** | 100 | 100 | 69 | 0,6 s | 0.006 | 0 ms | 221 Ko |
+| `/boutique` | mobile | **100** | 100 | 100 | 69 | 1,1 s | 0.001 | 60 ms | 227 Ko |
+| `/boutique` | desktop | **100** | 100 | 100 | 69 | 0,3 s | 0.007 | 0 ms | 231 Ko |
+| `/boutique/serum-hydratant-demo` | mobile | **91** | 100 | 100 | 69 | 3,5 s | 0 | 80 ms | 222 Ko |
+| `/boutique/serum-hydratant-demo` | desktop | **100** | 100 | 100 | 69 | 0,7 s | 0 | 0 ms | 226 Ko |
+| `/soins` | mobile | **92** | 100 | 100 | 69 | 3,3 s | 0.001 | 70 ms | 218 Ko |
+| `/soins` | desktop | **100** | 100 | 100 | 69 | 0,7 s | 0.001 | 0 ms | 221 Ko |
+| `/soins/reservation` | mobile | **94** | 100 | 100 | 69 | 3,0 s | 0.001 | 80 ms | 222 Ko |
+| `/soins/reservation` | desktop | **100** | 100 | 100 | 69 | 0,6 s | 0.001 | 0 ms | 225 Ko |
 
 \* SEO 69 : uniquement parce que le prototype est volontairement `noindex` (`NEXT_PUBLIC_CONTENT_MODE=demo`).
 
@@ -36,4 +36,4 @@ Jost préchargés, italique à la demande), Three.js (137 Ko) téléchargé seul
 appareils modestes, détection du rendu logiciel, démarrage au repos, pause hors écran, qualité adaptative, zod retiré du
 bundle client (`sideEffects: false`), pages statiques/ISR, aucune ressource tierce.
 
-Historique : accueil mobile 60 (TBT 2,56 s) → 86 → 90 → **95** au fil des correctifs.
+Historique : accueil mobile 60 (TBT 2,56 s) → 86 → 90 → 95 (v1) ; v2 : 88 → **93** (accessibilité 93 → 100) après correctifs. Coût JavaScript de l'expérience v2 : ≈ +55 Ko compressés (GSAP, ScrollTrigger, Lenis).

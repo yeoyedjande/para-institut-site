@@ -1,0 +1,63 @@
+.marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding-block: clamp(1.25rem, 3vw, 2.5rem);
+  transform: skewX(var(--skew, 0deg));
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 38s linear infinite;
+}
+
+.marquee[data-reverse] .track {
+  animation-direction: reverse;
+}
+
+.group {
+  display: flex;
+  flex: none;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding-right: clamp(1.5rem, 3vw, 3rem);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(3rem, 1.5rem + 7vw, 9.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.outline .item {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--brand-turquoise-deep);
+}
+
+.solid .item {
+  color: var(--brand-turquoise-night);
+}
+
+.star {
+  font-style: normal;
+  font-size: 0.3em;
+  color: var(--brand-turquoise);
+  -webkit-text-stroke: 0;
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

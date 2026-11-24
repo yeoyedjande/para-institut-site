@@ -24,8 +24,20 @@ export function ProductCard({ product, category }: { product: Product; category:
 
   return (
     <article className={styles.card} aria-labelledby={`p-${product.id}`}>
-      <div className={styles.media}>
-        <Link href={href} tabIndex={-1} aria-hidden="true" className={styles.mediaLink}>
+      <div
+        className={styles.media}
+        onPointerMove={(e) => {
+          if (e.pointerType !== "mouse") return;
+          const r = e.currentTarget.getBoundingClientRect();
+          e.currentTarget.style.setProperty("--rx", `${(((e.clientY - r.top) / r.height) - 0.5) * -10}deg`);
+          e.currentTarget.style.setProperty("--ry", `${(((e.clientX - r.left) / r.width) - 0.5) * 12}deg`);
+        }}
+        onPointerLeave={(e) => {
+          e.currentTarget.style.setProperty("--rx", "0deg");
+          e.currentTarget.style.setProperty("--ry", "0deg");
+        }}
+      >
+        <Link href={href} tabIndex={-1} aria-hidden="true" className={styles.mediaLink} data-cursor="Voir">
           <Poster texture={textureVisual(product.texture)} alt="" className={styles.poster} sizes="(max-width: 640px) 70vw, 22vw" />
         </Link>
         <div className={styles.badges}>

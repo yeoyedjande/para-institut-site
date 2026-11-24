@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { CartProvider } from "@/components/cart/cart-context";
+import { Cursor } from "@/components/experience/cursor";
+import { SmoothScroll } from "@/components/experience/smooth-scroll";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { CONTENT_MODE, SITE_URL } from "@/lib/content-mode";
@@ -39,7 +41,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         {/* Seules les polices du premier écran sont préchargées ; l'italique arrive à la demande. */}
         <link rel="preload" href="/fonts/bodoni-moda-latin-var.woff2" as="font" type="font/woff2" crossOrigin="" />
@@ -57,6 +59,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteFooter />
           <CartDrawer />
         </CartProvider>
+        <SmoothScroll />
+        <Cursor />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()).replace(/</g, "\\u003c") }}
