@@ -232,7 +232,7 @@
 }
 
 .control::placeholder {
-  color: #7b8b88;
+  color: #667673; /* 4,6:1 sur blanc */
 }
 
 .control:hover {

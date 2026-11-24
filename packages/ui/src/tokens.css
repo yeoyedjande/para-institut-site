@@ -5,10 +5,10 @@
  */
 :root {
   /* ---------- Couleurs de marque permanentes (logo officiel) ---------- */
-  --brand-turquoise: #009a96; /* fond du logo — aplats, surfaces de marque (pas de petit texte blanc dessus : 3,5:1) */
-  --brand-turquoise-deep: #00706d; /* interactif sur clair — 5,9:1 sur blanc */
-  --brand-turquoise-night: #005c59; /* titres sur clair, fonds sombres — 7,6:1 */
-  --brand-abyss: #003f3c; /* sections immersives sombres — blanc 11:1 */
+  --brand-turquoise: #009a96; /* fond du logo — aplats, surfaces de marque (blanc 3,46:1 : grands textes uniquement) */
+  --brand-turquoise-deep: #00706d; /* interactif sur clair — blanc 5,93:1 ; 5,6:1 sur ivoire */
+  --brand-turquoise-night: #005c59; /* titres sur clair, fonds sombres — blanc 7,85:1 */
+  --brand-abyss: #003f3c; /* sections immersives sombres — blanc 11,82:1 */
   --brand-ink-deep: #032523; /* fond le plus profond (scènes 3D) */
   --brand-silver: #c6c6c6; /* monogramme « PI » du logo */
   --brand-silver-soft: #e4e4e2;
@@ -21,8 +21,8 @@
   --neutral-mist: #e6f3f2; /* turquoise très clair */
 
   /* ---------- Accent (dérivé de la communication de campagne, usage parcimonieux) ---------- */
-  --accent-gold: #e2c27f; /* sur fonds sombres uniquement — 9,0:1 sur abyss */
-  --accent-gold-deep: #7a5c1e; /* texte doré sur clair — 6,1:1 sur ivoire */
+  --accent-gold: #e2c27f; /* sur fonds sombres uniquement — 6,9:1 sur abyss */
+  --accent-gold-deep: #7a5c1e; /* texte doré sur clair — 5,87:1 sur ivoire */
 
   /* ---------- Rôles sémantiques ---------- */
   --color-bg: var(--neutral-ivory);
@@ -30,8 +30,8 @@
   --color-surface-2: var(--neutral-sand);
   --color-surface-brand: var(--brand-turquoise);
   --color-surface-inverse: var(--brand-abyss);
-  --color-text: #0f2826; /* 15,1:1 sur ivoire */
-  --color-text-secondary: #4a605c; /* 6,3:1 sur ivoire */
+  --color-text: #0f2826; /* 14,66:1 sur ivoire */
+  --color-text-secondary: #4a605c; /* 6,36:1 sur ivoire, 5,73:1 sur sable */
   --color-text-inverse: #ffffff;
   --color-text-inverse-secondary: rgb(255 255 255 / 0.74); /* ≥ 6,5:1 sur abyss */
   --color-primary: var(--brand-turquoise-deep);
@@ -44,11 +44,11 @@
   --color-focus: #00706d;
   --color-focus-inverse: var(--accent-gold);
 
-  --color-success: #1d6b45; /* 6,4:1 */
+  --color-success: #1d6b45; /* 5,56:1 sur son fond */
   --color-success-bg: #e3f1e9;
-  --color-warning: #8a5300; /* 6,0:1 */
+  --color-warning: #8a5300; /* 5,56:1 sur son fond */
   --color-warning-bg: #fbefd9;
-  --color-error: #b42318; /* 6,3:1 */
+  --color-error: #b42318; /* 5,53:1 sur son fond */
   --color-error-bg: #fbe7e5;
   --color-info: var(--brand-turquoise-night);
   --color-info-bg: var(--neutral-mist);
