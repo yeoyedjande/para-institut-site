@@ -1,0 +1,153 @@
+@import "@para/ui/tokens.css";
+@import "@para/ui/base.css";
+
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("/fonts/bodoni-moda-latin-var.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/jost-latin-var.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+body {
+  background: #f4f6f5;
+}
+
+.shell {
+  display: grid;
+  min-height: 100dvh;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    grid-template-columns: 17rem 1fr;
+  }
+}
+
+.sidebar {
+  background: var(--brand-ink-deep);
+  color: #fff;
+  padding: var(--space-5) var(--space-4);
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    overflow-y: auto;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.brand img {
+  background: var(--brand-turquoise);
+}
+
+.brand span {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.75);
+}
+
+.navGroup p {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.navGroup ul {
+  display: grid;
+  gap: 2px;
+}
+
+.navGroup a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-left: 2px solid transparent;
+  color: rgb(255 255 255 / 0.82);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+.navGroup a:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: #fff;
+}
+
+.navGroup a[aria-current="page"] {
+  border-left-color: var(--brand-turquoise);
+  background: rgb(0 154 150 / 0.18);
+  color: #fff;
+}
+
+.main {
+  padding: var(--space-6) var(--gutter) var(--space-8);
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: #fff;
+  border: 1px solid #e3e8e7;
+}
+
+.card h2 {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.metric {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: 1.1rem;
+}

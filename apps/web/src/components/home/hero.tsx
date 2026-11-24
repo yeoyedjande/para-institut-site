@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowIcon, buttonClass } from "@para/ui";
 import { MatterCanvas } from "@/components/matter/matter-canvas";
+import { preloadPoster } from "./poster";
 import { ESTABLISHMENT, PHONES, whatsappHref } from "@/content/establishment";
 import styles from "./hero.module.css";
 
@@ -14,6 +15,7 @@ const LINES = [
 
 export function Hero() {
   const phone = PHONES[0];
+  preloadPoster("perle", "(max-width: 768px) 80vw, 40vw");
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
       <div className={`container ${styles.grid}`}>
@@ -46,6 +48,7 @@ export function Hero() {
             <MatterCanvas
               texture="perle"
               priority
+              staticOnLowEnd
               className={styles.matter}
               alt="Illustration 3D : une goutte de matière nacrée aux reflets turquoise"
               sizes="(max-width: 768px) 80vw, 40vw"

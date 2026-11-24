@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { CartProvider } from "@/components/cart/cart-context";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -8,27 +7,6 @@ import { CONTENT_MODE, SITE_URL } from "@/lib/content-mode";
 import { buildSearchIndex } from "@/lib/search-index";
 import { localBusinessJsonLd } from "@/lib/structured-data";
 import "./globals.css";
-
-const bodoni = localFont({
-  src: [
-    { path: "./fonts/bodoni-moda-latin-var.woff2", style: "normal", weight: "400 900" },
-    { path: "./fonts/bodoni-moda-italic-latin-var.woff2", style: "italic", weight: "400 900" },
-  ],
-  variable: "--font-bodoni",
-  display: "swap",
-  preload: true,
-  fallback: ["Didot", "Georgia", "serif"],
-  adjustFontFallback: "Times New Roman",
-});
-
-const jost = localFont({
-  src: [{ path: "./fonts/jost-latin-var.woff2", style: "normal", weight: "300 700" }],
-  variable: "--font-jost",
-  display: "swap",
-  preload: true,
-  fallback: ["Futura", "system-ui", "sans-serif"],
-  adjustFontFallback: "Arial",
-});
 
 const description =
   "Para Institut du Palm Club : institut de détente et de beauté et parapharmacie, dans la galerie marchande de l'Hôtel Palm Club à Abidjan.";
@@ -61,7 +39,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={`${bodoni.variable} ${jost.variable}`}>
+    <html lang="fr">
+      <head>
+        {/* Seules les polices du premier écran sont préchargées ; l'italique arrive à la demande. */}
+        <link rel="preload" href="/fonts/bodoni-moda-latin-var.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/jost-latin-var.woff2" as="font" type="font/woff2" crossOrigin="" />
+      </head>
       <body>
         <a className="skip-link" href="#contenu">
           Aller au contenu

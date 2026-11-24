@@ -20,5 +20,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
     "vitest": "^5.1.1"
-  }
+  },
+  "sideEffects": false
 }

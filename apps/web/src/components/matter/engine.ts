@@ -442,25 +442,3 @@ export class MatterEngine {
     }
   }
 }
-
-/** Détection prudente : WebGL disponible, pas d'économie de données, mémoire suffisante. */
-export function webglSupport(): "high" | "low" | "none" {
-  if (typeof window === "undefined") return "none";
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("webgl") === "0") return "none";
-  const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
-  if (nav.connection?.saveData) return "none";
-  try {
-    const canvas = document.createElement("canvas");
-    const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
-    if (!gl) return "none";
-    (gl as WebGLRenderingContext).getExtension("WEBGL_lose_context")?.loseContext();
-  } catch {
-    return "none";
-  }
-  const lowEnd =
-    (nav.deviceMemory !== undefined && nav.deviceMemory < 4) ||
-    (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4) ||
-    window.matchMedia("(max-width: 767px)").matches;
-  return lowEnd ? "low" : "high";
-}

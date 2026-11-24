@@ -54,8 +54,8 @@
   --color-info-bg: var(--neutral-mist);
 
   /* ---------- Typographie ---------- */
-  --font-display: var(--font-bodoni, "Bodoni Moda"), "Didot", "Bodoni 72", Georgia, serif;
-  --font-sans: var(--font-jost, "Jost"), "Futura", "Avenir Next", system-ui, sans-serif;
+  --font-display: "Bodoni Moda", "Bodoni Fallback", "Didot", "Bodoni 72", Georgia, serif;
+  --font-sans: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
 
   /* Échelle fluide (360 → 1440 px) */
   --text-2xs: 0.6875rem; /* 11 — étiquettes en capitales espacées */

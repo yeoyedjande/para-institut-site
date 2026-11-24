@@ -83,6 +83,7 @@ export function ShopBrowser({ products, categories, initialCategory }: { product
         {results.length} produit{results.length > 1 ? "s" : ""}
       </p>
 
+      <h2 className="sr-only">Produits</h2>
       {results.length ? (
         <ul role="list" className={styles.grid}>
           {results.map((p) => (

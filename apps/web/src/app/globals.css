@@ -1,6 +1,39 @@
 @import "@para/ui/tokens.css";
 @import "@para/ui/base.css";
 
+/* Polices auto-hébergées (SIL OFL 1.1, public/fonts) — aucune requête vers un service tiers */
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("/fonts/bodoni-moda-latin-var.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("/fonts/bodoni-moda-italic-latin-var.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/jost-latin-var.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Repli métrique ajusté pour limiter le décalage au chargement des polices */
+@font-face {
+  font-family: "Bodoni Fallback";
+  src: local("Georgia"), local("Times New Roman");
+  size-adjust: 96%;
+  ascent-override: 92%;
+}
+
 html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }

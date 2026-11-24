@@ -40,7 +40,7 @@ export default function SoinsPage() {
           {SERVICE_FAMILIES_CONTENT.map((s, i) => (
             <Reveal as="section" key={s.family} id={s.family} className={styles.family} aria-labelledby={`f-${s.family}`}>
               <div className={styles.visual} data-flip={i % 2 === 1 || undefined}>
-                <Poster texture={s.texture} alt="" className={styles.poster} />
+                <Poster texture={s.texture} alt="" className={styles.poster} eager={i === 0} sizes="(max-width: 900px) 80vw, 40vw" />
               </div>
               <div className={styles.text}>
                 <p className="eyebrow">{s.index}</p>

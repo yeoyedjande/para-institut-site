@@ -21,11 +21,20 @@
     linear-gradient(160deg, var(--brand-ink-deep), var(--brand-abyss) 60%, #04332f);
 }
 
+/* Turquoise officiel autour de la goutte, turquoise profond sous le texte : blanc ≥ 5,9:1 (AA) */
 .para {
   background:
-    radial-gradient(46rem 36rem at 72% 55%, rgb(255 255 255 / 0.2), transparent 70%),
-    var(--brand-turquoise);
-  color: var(--brand-ink-deep);
+    radial-gradient(circle at 72% 52%, rgb(255 255 255 / 0.22) 0, transparent 22rem),
+    radial-gradient(circle at 72% 52%, var(--brand-turquoise) 0, var(--brand-turquoise) 15rem, var(--brand-turquoise-deep) 30rem);
+  color: #fff;
+}
+
+@media (max-width: 899px) {
+  .para {
+    background:
+      radial-gradient(circle at 50% 22%, rgb(255 255 255 / 0.2) 0, transparent 12rem),
+      linear-gradient(180deg, var(--brand-turquoise) 0, var(--brand-turquoise-deep) 42%);
+  }
 }
 
 /* --- Version enrichie : panneaux superposés, révélation en goutte --- */
@@ -47,7 +56,7 @@
 }
 
 .section[data-enhanced] .para {
-  clip-path: circle(calc(var(--reveal) * 150%) at 72% 52%);
+  clip-path: circle(calc(var(--reveal) * 150%) at var(--drop-x, 72%) var(--drop-y, 52%));
   will-change: clip-path;
 }
 
@@ -100,13 +109,12 @@
   color: #fff;
 }
 
-.eyebrowPara {
-  color: var(--brand-ink-deep);
+.para .eyebrowPara {
+  color: rgb(255 255 255 / 0.85);
 }
 
-.ledePara {
-  color: var(--brand-ink-deep);
-  opacity: 0.86;
+.para .ledePara {
+  color: rgb(255 255 255 / 0.92);
 }
 
 .tags {
@@ -137,8 +145,32 @@
   .poster {
     width: min(70%, 18rem);
   }
+  /* Mobile : la goutte devient un médaillon, le texte et les actions restent au-dessus du sélecteur */
+  .section[data-enhanced] {
+    --drop-x: 78%;
+    --drop-y: 18%;
+  }
   .section[data-enhanced] .media {
     order: -1;
+    justify-items: end;
+  }
+  .section[data-enhanced] .poster {
+    width: min(36%, 9.5rem);
+  }
+  .section[data-enhanced] .panel {
+    padding-bottom: 6.5rem;
+  }
+  .section[data-enhanced] .inner {
+    gap: var(--space-4);
+  }
+  .section[data-enhanced] .text {
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 599px) {
+  .section[data-enhanced] .tags {
+    display: none;
   }
 }
 

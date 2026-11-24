@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { TextureKey } from "./textures";
+import { webglSupport } from "./support";
 import { POSTERS } from "./textures";
 import styles from "./matter.module.css";
 
@@ -20,6 +21,13 @@ export interface MatterCanvasProps {
   still?: boolean;
   priority?: boolean;
   sizes?: string;
+  /**
+   * "load" : démarre au repos du navigateur après le chargement (héros) ;
+   * "visible" : démarre seulement quand la scène entre dans l'écran (sections plus bas).
+   */
+  boot?: "load" | "visible";
+  /** Sur les appareils modestes (mobile, peu de mémoire), conserver le visuel statique. */
+  staticOnLowEnd?: boolean;
 }
 
 /**
@@ -27,7 +35,7 @@ export interface MatterCanvasProps {
  * si l'appareil s'y prête et que l'utilisateur n'a pas demandé moins d'animations, charge Three.js à la
  * demande et fond la scène 3D par-dessus. La scène s'arrête dès qu'elle sort de l'écran.
  */
-export function MatterCanvas({ texture, alt, className, interactive = true, scrollProgress, still, priority, sizes = "(max-width: 768px) 90vw, 45vw" }: MatterCanvasProps) {
+export function MatterCanvas({ texture, alt, className, interactive = true, scrollProgress, still, priority, sizes = "(max-width: 768px) 90vw, 45vw", boot: bootMode = "load", staticOnLowEnd = false }: MatterCanvasProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<EngineHandle | null>(null);
@@ -43,11 +51,16 @@ export function MatterCanvas({ texture, alt, className, interactive = true, scro
     let cancelled = false;
     let visible = false;
     let idleHandle: number | undefined;
+    let booted = false;
 
     const boot = async () => {
-      const mod = await import("./engine");
-      const support = still ? "high" : mod.webglSupport();
+      if (booted) return;
+      booted = true;
+      const support = still ? "high" : webglSupport();
       if (cancelled || support === "none" || (reduced && !still)) return;
+      if (support === "low" && staticOnLowEnd && !still) return;
+      const mod = await import("./engine");
+      if (cancelled) return;
       try {
         const engine = new mod.MatterEngine(canvas, {
           texture,
@@ -66,6 +79,7 @@ export function MatterCanvas({ texture, alt, className, interactive = true, scro
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = Boolean(entry?.isIntersecting);
+        if (visible && bootMode === "visible" && document.readyState === "complete") void boot();
         const engine = engineRef.current;
         if (!engine) return;
         if (visible && document.visibilityState === "visible") engine.start();
@@ -87,7 +101,9 @@ export function MatterCanvas({ texture, alt, className, interactive = true, scro
     const schedule = () => {
       const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
       if (still) void boot();
-      else if (ric) idleHandle = ric(() => void boot(), { timeout: 2500 });
+      else if (bootMode === "visible") {
+        if (visible) void boot();
+      } else if (ric) idleHandle = ric(() => void boot(), { timeout: 2500 });
       else idleHandle = window.setTimeout(() => void boot(), 800);
     };
     if (document.readyState === "complete") schedule();

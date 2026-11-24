@@ -1,0 +1,48 @@
+[project]
+name = "para-institut-api"
+version = "0.1.0"
+description = "API métier Para Institut du Palm Club (FastAPI, monolithe modulaire)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.165,<0.166",
+    "uvicorn[standard]>=0.54,<0.55",
+    "sqlalchemy>=2.0.40,<2.2",
+    "alembic>=1.20,<1.21",
+    "pydantic>=2.14,<2.15",
+    "pydantic-settings>=2.16,<2.17",
+    "psycopg[binary]>=3.3,<3.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "httpx2>=2.13",
+    "ruff>=0.17",
+    "mypy>=2.4",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S", "C4", "DTZ", "T20", "RET", "SIM", "RUF", "ASYNC"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

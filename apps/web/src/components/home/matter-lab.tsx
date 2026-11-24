@@ -69,6 +69,7 @@ export function MatterLab() {
           <MatterCanvas
             texture={current.key}
             className={styles.canvas}
+            boot="visible"
             alt={`Illustration 3D de la texture ${current.name.toLowerCase()}`}
             sizes="(max-width: 768px) 92vw, 50vw"
           />
