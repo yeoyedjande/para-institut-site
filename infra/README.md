@@ -1,6 +1,8 @@
 # Infrastructure
 
-- `docker-compose.yml` : PostgreSQL 16 local (`pnpm db:up`), bases `para_official` et `para_official_test`.
+- `../docker-compose.yml` (racine) : pile complète locale — site, back-office, API (migrations au démarrage), PostgreSQL
+  (`docker compose up --build`). Images : `apps/web/Dockerfile`, `apps/admin/Dockerfile`, `services/api/Dockerfile`.
+- `docker-compose.yml` (ce dossier) : PostgreSQL 16 seul (`pnpm db:up`), bases `para_official` et `para_official_test`.
 - Cible d'hébergement : **Railway** (non déployé pendant cette mission). Trois services prévus :
   `web` (apps/web, `output: standalone`), `admin` (apps/admin, accès restreint), `api` (services/api, Dockerfile),
   plus PostgreSQL managé et un stockage S3 compatible pour la médiathèque.

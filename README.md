@@ -22,7 +22,21 @@ infra/            PostgreSQL local (docker compose), notes d'hébergement
 Node.js ≥ 22, pnpm 10 (`corepack enable`), Python ≥ 3.12 et [uv](https://docs.astral.sh/uv/), PostgreSQL 16
 (ou Docker).
 
-## Démarrage
+## Démarrage le plus simple : Docker (rien d'autre à installer)
+```bash
+docker compose up --build
+```
+| Service | Adresse |
+|---|---|
+| Site public | http://localhost:3000 |
+| Back-office | http://localhost:3001 |
+| API (documentation interactive) | http://localhost:8000/docs |
+
+La première construction prend quelques minutes. PostgreSQL est démarré et les migrations sont appliquées
+automatiquement. Arrêt : `docker compose down` (ajouter `-v` pour effacer la base locale). Valeurs de développement
+uniquement : ce fichier ne sert pas au déploiement.
+
+## Démarrage en développement (rechargement à chaud)
 ```bash
 pnpm install
 pnpm dev                     # site public → http://localhost:3000

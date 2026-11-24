@@ -2,7 +2,7 @@
 FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /usr/local/bin/uv
+RUN pip install --no-cache-dir "uv>=0.11,<0.12"
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 COPY . .
