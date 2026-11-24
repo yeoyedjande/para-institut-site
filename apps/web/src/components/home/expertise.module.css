@@ -1,0 +1,111 @@
+.section {
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1.1fr;
+  }
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.em {
+  color: var(--accent-gold-deep);
+}
+
+.nuancier ul {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: clamp(0.25rem, 1vw, 0.75rem);
+  align-items: end;
+}
+
+.nuancier li {
+  aspect-ratio: 1 / 2.6;
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 60% at 30% 18%, rgb(255 255 255 / 0.55), transparent 45%),
+    radial-gradient(90% 60% at 70% 95%, rgb(0 0 0 / 0.25), transparent 60%),
+    var(--c);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 20px 30px -22px var(--c);
+  transform: translateY(calc((var(--i) - 3.5) * (var(--i) - 3.5) * -0.6%));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nuancier li {
+    transition: transform var(--dur-cinematic) var(--ease-out);
+    transition-delay: calc(var(--i) * 70ms);
+  }
+  .nuancier[data-state="hidden"] li {
+    transform: translateY(30%);
+  }
+}
+
+.nuancierCaption {
+  margin-top: var(--space-4);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-lg);
+  text-align: right;
+}
+
+.steps {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.step {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-5) var(--space-4) var(--space-5) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stepN {
+  font-size: var(--text-2xs);
+  letter-spacing: 0.16em;
+  color: var(--accent-gold-deep);
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-xl);
+}
+
+.stepText {
+  color: var(--color-text-secondary);
+  max-width: 18rem;
+}
+
+.disclaimer {
+  margin-top: var(--space-5);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,112 @@
+.section {
+  background: var(--color-bg);
+}
+
+.head {
+  display: grid;
+  gap: var(--space-5);
+  margin-bottom: var(--space-7);
+}
+
+@media (min-width: 900px) {
+  .head {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: end;
+  }
+}
+
+.headText,
+.headAside {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+.em {
+  color: var(--brand-turquoise-deep);
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--color-border);
+  margin-bottom: var(--space-7);
+}
+
+@media (min-width: 900px) {
+  .categories {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.category {
+  display: grid;
+  gap: var(--space-1);
+  min-height: 100%;
+  padding: var(--space-5) var(--space-4) var(--space-5) 0;
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  transition: color var(--dur-base) var(--ease-out), padding var(--dur-base) var(--ease-out);
+}
+
+.category:hover {
+  color: var(--brand-turquoise-night);
+  padding-left: var(--space-3);
+}
+
+.catIndex {
+  font-size: var(--text-2xs);
+  letter-spacing: 0.16em;
+  color: var(--color-text-secondary);
+}
+
+.catName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1.1;
+}
+
+.catDesc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.railWrap {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.flag {
+  justify-self: start;
+}
+
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(76%, 18rem);
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding-bottom: var(--space-3);
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  scrollbar-width: thin;
+}
+
+.item {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 900px) {
+  .rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .item:nth-child(even) {
+    margin-top: var(--space-8);
+  }
+}

@@ -1,0 +1,63 @@
+.section {
+  padding-block: clamp(3.5rem, 2rem + 5vw, 7rem);
+  background: var(--neutral-mist);
+  border-block: 1px solid rgb(0 112 109 / 0.15);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.head {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  max-width: 30ch;
+}
+
+.title em {
+  color: var(--brand-turquoise-deep);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1rem + 5vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--brand-turquoise-night);
+}
+
+.frond {
+  width: clamp(1.75rem, 3vw, 3rem);
+  height: clamp(1.75rem, 3vw, 3rem);
+  color: var(--brand-turquoise);
+}
+
+.badge {
+  align-self: flex-start;
+}
+
+.note {
+  max-width: 40rem;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}

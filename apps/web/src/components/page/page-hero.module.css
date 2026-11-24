@@ -1,0 +1,53 @@
+.hero {
+  position: relative;
+  padding: calc(var(--header-h) + clamp(4.5rem, 9vw, 7rem)) 0 clamp(3rem, 6vw, 5rem);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.dark {
+  background:
+    radial-gradient(50rem 30rem at 80% 20%, rgb(0 154 150 / 0.35), transparent 70%),
+    var(--brand-abyss);
+  border-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+  align-items: end;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.text {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-3xl);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.title em {
+  color: var(--brand-turquoise-deep);
+}
+
+.dark .title em {
+  color: var(--accent-gold);
+}
+
+.aside {
+  justify-self: end;
+  width: min(100%, 22rem);
+}

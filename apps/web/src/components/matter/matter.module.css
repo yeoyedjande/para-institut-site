@@ -1,0 +1,34 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  touch-action: pan-y;
+}
+
+.poster,
+.poster img,
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.poster img {
+  object-fit: contain;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.canvas {
+  opacity: 0;
+  transition: opacity var(--dur-cinematic) var(--ease-out);
+}
+
+.wrap[data-live] .canvas {
+  opacity: 1;
+}
+
+.wrap[data-live] .poster img {
+  opacity: 0;
+  transition-delay: 300ms;
+}
