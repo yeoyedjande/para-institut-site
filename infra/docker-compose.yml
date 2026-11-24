@@ -1,0 +1,19 @@
+# Environnement local : PostgreSQL uniquement (les applications tournent avec pnpm / uv).
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: para
+      POSTGRES_PASSWORD: para_dev # mot de passe local uniquement
+      POSTGRES_DB: para_official
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U para -d para_official"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  pgdata:
