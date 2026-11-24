@@ -1,0 +1,131 @@
+/*
+ * Para Institut du Palm Club — design tokens (Warm Beauty Studio).
+ * Source des couleurs : docs/brand/OFFICIAL_COLORS.md (relevé sur le logo officiel logo_para.jpg).
+ * Toute nouvelle couleur doit y être documentée avec sa source et ses contrastes.
+ */
+:root {
+  /* ---------- Couleurs de marque permanentes (logo officiel) ---------- */
+  --brand-turquoise: #009a96; /* fond du logo — aplats, surfaces de marque (pas de petit texte blanc dessus : 3,5:1) */
+  --brand-turquoise-deep: #00706d; /* interactif sur clair — 5,9:1 sur blanc */
+  --brand-turquoise-night: #005c59; /* titres sur clair, fonds sombres — 7,6:1 */
+  --brand-abyss: #003f3c; /* sections immersives sombres — blanc 11:1 */
+  --brand-ink-deep: #032523; /* fond le plus profond (scènes 3D) */
+  --brand-silver: #c6c6c6; /* monogramme « PI » du logo */
+  --brand-silver-soft: #e4e4e2;
+  --brand-white: #ffffff;
+
+  /* ---------- Neutres chauds dérivés (Warm Beauty Studio) ---------- */
+  --neutral-ivory: #fbf8f3; /* fond principal, chaleur discrète */
+  --neutral-sand: #f2ece2; /* surface secondaire */
+  --neutral-linen: #e8dfd1; /* séparateurs éditoriaux */
+  --neutral-mist: #e6f3f2; /* turquoise très clair */
+
+  /* ---------- Accent (dérivé de la communication de campagne, usage parcimonieux) ---------- */
+  --accent-gold: #e2c27f; /* sur fonds sombres uniquement — 9,0:1 sur abyss */
+  --accent-gold-deep: #7a5c1e; /* texte doré sur clair — 6,1:1 sur ivoire */
+
+  /* ---------- Rôles sémantiques ---------- */
+  --color-bg: var(--neutral-ivory);
+  --color-surface: var(--brand-white);
+  --color-surface-2: var(--neutral-sand);
+  --color-surface-brand: var(--brand-turquoise);
+  --color-surface-inverse: var(--brand-abyss);
+  --color-text: #0f2826; /* 15,1:1 sur ivoire */
+  --color-text-secondary: #4a605c; /* 6,3:1 sur ivoire */
+  --color-text-inverse: #ffffff;
+  --color-text-inverse-secondary: rgb(255 255 255 / 0.74); /* ≥ 6,5:1 sur abyss */
+  --color-primary: var(--brand-turquoise-deep);
+  --color-primary-hover: var(--brand-turquoise-night);
+  --color-on-primary: #ffffff;
+  --color-secondary: var(--brand-silver);
+  --color-accent: var(--accent-gold-deep);
+  --color-border: #dcd6cb;
+  --color-border-strong: #a9b8b4;
+  --color-focus: #00706d;
+  --color-focus-inverse: var(--accent-gold);
+
+  --color-success: #1d6b45; /* 6,4:1 */
+  --color-success-bg: #e3f1e9;
+  --color-warning: #8a5300; /* 6,0:1 */
+  --color-warning-bg: #fbefd9;
+  --color-error: #b42318; /* 6,3:1 */
+  --color-error-bg: #fbe7e5;
+  --color-info: var(--brand-turquoise-night);
+  --color-info-bg: var(--neutral-mist);
+
+  /* ---------- Typographie ---------- */
+  --font-display: var(--font-bodoni, "Bodoni Moda"), "Didot", "Bodoni 72", Georgia, serif;
+  --font-sans: var(--font-jost, "Jost"), "Futura", "Avenir Next", system-ui, sans-serif;
+
+  /* Échelle fluide (360 → 1440 px) */
+  --text-2xs: 0.6875rem; /* 11 — étiquettes en capitales espacées */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-lg: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.3rem + 0.9vw, 2.125rem);
+  --text-2xl: clamp(2rem, 1.6rem + 1.8vw, 3.25rem);
+  --text-3xl: clamp(2.5rem, 1.8rem + 3.2vw, 4.75rem);
+  --text-display: clamp(3rem, 1.6rem + 6.6vw, 8.5rem);
+
+  --leading-tight: 0.98;
+  --leading-snug: 1.15;
+  --leading-normal: 1.55;
+  --tracking-caps: 0.22em; /* écho de « P A L M   C L U B » */
+  --tracking-tight: -0.02em;
+
+  /* ---------- Espacements (base 4 px) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-y: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --container: 88rem;
+  --measure: 34rem;
+
+  /* ---------- Formes ---------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-pill: 999px;
+  --radius-arch: 999px 999px 0 0; /* arche : écho des voûtes et des palmes */
+
+  /* ---------- Élévation (sobre) ---------- */
+  --shadow-1: 0 1px 2px rgb(3 37 35 / 0.06);
+  --shadow-2: 0 18px 40px -24px rgb(3 37 35 / 0.35);
+
+  /* ---------- Motion tokens ---------- */
+  --dur-instant: 120ms;
+  --dur-fast: 200ms;
+  --dur-base: 360ms;
+  --dur-slow: 700ms;
+  --dur-cinematic: 1200ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* expo out — révélations */
+  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1); /* « soie » — transitions d'univers */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---------- Mise en page ---------- */
+  --header-h: 4.25rem;
+  --z-header: 50;
+  --z-overlay: 80;
+  --z-toast: 90;
+
+  /* Points de rupture (référence ; les media queries utilisent les valeurs littérales) :
+     sm 640, md 768, lg 1024, xl 1280, 2xl 1536 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --dur-cinematic: 0ms;
+  }
+}

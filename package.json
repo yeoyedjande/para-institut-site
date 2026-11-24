@@ -1,0 +1,28 @@
+{
+  "name": "para-institut-official",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Site officiel Para Institut du Palm Club — vitrine, boutique, réservation de soins, espace client, back-office",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @para/web dev",
+    "dev:web": "pnpm --filter @para/web dev",
+    "dev:admin": "pnpm --filter @para/admin dev",
+    "dev:api": "cd services/api && uv run uvicorn app.main:app --reload --port 8000",
+    "build": "pnpm -r --filter ./apps/* build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter @para/web test:e2e",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "format": "prettier --write .",
+    "db:up": "docker compose -f infra/docker-compose.yml up -d postgres",
+    "db:down": "docker compose -f infra/docker-compose.yml down"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
